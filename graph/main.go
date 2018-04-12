@@ -2,6 +2,6 @@ package main
 
 func main() {
 	G := CreateMGraph()
-	//DFSTraverse(G)
+	DFSTraverse(G)
 	Prim(G)
 }
