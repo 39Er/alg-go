@@ -86,7 +86,6 @@ func deleteNode(tree *BiTree) {
 		next = next.rchild
 	}
 	tree.data = next.data
-	fmt.Println(next.data)
 	if previous.lchild == next { //若节点tree的左子树没有右子树,此时previous=tree
 		previous.lchild = next.lchild
 	} else {
