@@ -1,7 +1,8 @@
-package alg_go
+package find
 
 import "fmt"
 
+/*二叉排序树*/
 type BiTree struct {
 	data           int
 	lchild, rchild *BiTree
@@ -46,6 +47,7 @@ func SearchBST(tree *BiTree, key int) bool {
 	}
 }
 
+/*中序遍历*/
 func ListBST(tree *BiTree) {
 	if tree == nil {
 		return

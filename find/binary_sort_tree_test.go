@@ -1,4 +1,4 @@
-package alg_go
+package find
 
 import (
 	"fmt"
