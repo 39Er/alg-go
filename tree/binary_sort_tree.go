@@ -1,4 +1,4 @@
-package find
+package tree
 
 import "fmt"
 
