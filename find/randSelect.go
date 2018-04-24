@@ -59,12 +59,17 @@ func RandSelect2(arr []int, key int) int {
 }
 
 func random_selection(arr []int, p int, q int, key int) int {
+	fmt.Println("p:", p, "q:", q, "key:", key)
 	if p == q {
-		return arr[p]
+		if key != 1 {
+			return 0
+		} else {
+			return arr[p]
+		}
 	}
-	if key == 0 {
-		return -1
-	}
+	//if key == 0 {
+	//	return -1
+	//}
 	if p < q {
 		mid := random_partition(arr, p, q)
 		i := mid - p + 1
@@ -81,7 +86,6 @@ func random_selection(arr []int, p int, q int, key int) int {
 }
 
 func random_partition(arr []int, p int, q int) int {
-	fmt.Println("p:", p, "q:", q)
 	pivotIdx := p + rand.Intn(q-p+1)
 	fmt.Println("pivotIdx", pivotIdx)
 	pivot := arr[pivotIdx]
