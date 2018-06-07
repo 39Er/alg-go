@@ -1,5 +1,7 @@
 package sort
 
+import "fmt"
+
 func SelectionSort(arr []int) []int {
 	var minValue int
 	var minIndex int
@@ -13,6 +15,7 @@ func SelectionSort(arr []int) []int {
 			}
 		}
 		arr[i], arr[minIndex] = arr[minIndex], arr[i]
+		fmt.Println(arr)
 	}
 	return arr
 }

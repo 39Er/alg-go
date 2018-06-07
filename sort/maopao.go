@@ -1,5 +1,7 @@
 package sort
 
+import "fmt"
+
 func Maopao(arr []int) []int {
 	for i := 0; i < len(arr); i++ {
 		for j := 0; j < len(arr)-i-1; j++ {
@@ -7,6 +9,7 @@ func Maopao(arr []int) []int {
 				arr[j], arr[j+1] = arr[j+1], arr[j]
 			}
 		}
+		fmt.Println(arr)
 	}
 	return arr
 }

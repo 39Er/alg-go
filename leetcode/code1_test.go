@@ -19,3 +19,13 @@ func TestThreeSum(t *testing.T) {
 	nums := []int{-1, 0, 1, 2, -1, -4}
 	fmt.Println(ThreeSum(nums))
 }
+
+func TestThreeSumClosest(t *testing.T) {
+	nums := []int{-1, 2, 1, -4}
+	fmt.Println(ThreeSumClosest(nums, 1))
+}
+
+func TestLetterCombinations(t *testing.T) {
+	s := "29"
+	fmt.Println(LetterCombinations(s))
+}
