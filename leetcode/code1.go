@@ -184,3 +184,67 @@ func recursiveCombinations(startIndex int, digits string, dicts map[string][]str
 	}
 	return output
 }
+
+//18 4sum
+/**
+Given an array nums of n integers and an integer target, are there elements a, b, c, and d in nums such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.
+
+Note:
+
+The solution set must not contain duplicate quadruplets.
+
+Example:
+
+Given array nums = [1, 0, -1, 0, -2, 2], and target = 0.
+
+A solution set is:
+[
+  [-1,  0, 0, 1],
+  [-2, -1, 1, 2],
+  [-2,  0, 0, 2]
+]
+*/
+func FourSum(nums []int, target int) [][]int {
+	var result [][]int
+	length := len(nums)
+	if length < 4 {
+		return result
+	}
+	sort.Ints(nums)
+	for i := 0; i < length-3; i++ {
+		if nums[i]+nums[i+1]+nums[i+2]+nums[i+3] > target {
+			break
+		}
+		if nums[i]+nums[length-3]+nums[length-2]+nums[length-1] < target {
+			continue
+		}
+		for j := i + 1; j < length-2; j++ {
+			k, h := j+1, length-1
+			for k < h {
+				cursum := nums[i] + nums[j] + nums[k] + nums[h]
+				if cursum == target {
+					result = append(result, []int{nums[i], nums[j], nums[k], nums[h]})
+					k++
+					h--
+					for k < h && nums[k] == nums[k-1] {
+						k++
+					}
+					for k < h && nums[h] == nums[h+1] {
+						h--
+					}
+				} else if cursum < target {
+					k++
+				} else {
+					h--
+				}
+			}
+			for j < length-2 && nums[j+1] == nums[j] {
+				j++
+			}
+		}
+		for i < length-3 && nums[i+1] == nums[i] {
+			i++
+		}
+	}
+	return result
+}

@@ -29,3 +29,8 @@ func TestLetterCombinations(t *testing.T) {
 	s := "29"
 	fmt.Println(LetterCombinations(s))
 }
+
+func TestFourSum(t *testing.T) {
+	nums := []int{1, 2, 3, 4, -1, -2, -3, -4}
+	fmt.Println(FourSum(nums, 0))
+}
