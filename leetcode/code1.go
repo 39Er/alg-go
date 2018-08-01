@@ -1,6 +1,7 @@
 package leetcode
 
 import (
+	"container/list"
 	"fmt"
 	"regexp"
 	"sort"
@@ -247,4 +248,147 @@ func FourSum(nums []int, target int) [][]int {
 		}
 	}
 	return result
+}
+
+//19. Remove Nth Node From End of List
+/**
+Given a linked list, remove the n-th node from the end of list and return its head.
+
+Example:
+
+Given linked list: 1->2->3->4->5, and n = 2.
+
+After removing the second node from the end, the linked list becomes 1->2->3->5.
+*/
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+func RemoveNthFromEnd(head *ListNode, n int) *ListNode {
+	fast := head
+	slow := head
+	for n > 0 && fast != nil {
+		n--
+		fast = fast.Next
+	}
+	if fast == nil {
+		return slow.Next
+	}
+
+	for fast.Next != nil {
+		fast = fast.Next
+		slow = slow.Next
+	}
+	slow.Next = slow.Next.Next
+	return head
+}
+
+//20. Valid Parentheses
+/**
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Note that an empty string is also considered valid.
+
+Example 1:
+
+Input: "()"
+Output: true
+Example 2:
+
+Input: "()[]{}"
+Output: true
+Example 3:
+
+Input: "(]"
+Output: false
+Example 4:
+
+Input: "([)]"
+Output: false
+Example 5:
+
+Input: "{[]}"
+Output: true
+*/
+func IsValid(s string) bool {
+	stack := list.New()
+	for _, sub := range s {
+		str := fmt.Sprintf("%c", sub)
+		if str == "(" {
+			stack.PushBack(")")
+		} else if str == "[" {
+			stack.PushBack("]")
+		} else if str == "{" {
+			stack.PushBack("}")
+		} else {
+			if stack.Len() == 0 {
+				return false
+			}
+			e := stack.Back()
+			if e.Value != str {
+				return false
+			}
+			stack.Remove(e)
+		}
+	}
+	if stack.Len() != 0 {
+		return false
+	}
+	return true
+}
+
+//21. Merge Two Sorted Lists
+/**
+Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
+
+Example:
+
+Input: 1->2->4, 1->3->4
+Output: 1->1->2->3->4->4
+*/
+
+//递归
+func MergeTwoLists1(l1 *ListNode, l2 *ListNode) *ListNode {
+	if l1 == nil {
+		return l2
+	}
+	if l2 == nil {
+		return l1
+	}
+	if l1.Val < l2.Val {
+		l1.Next = MergeTwoLists1(l1.Next, l2)
+		return l1
+	} else {
+		l2.Next = MergeTwoLists1(l1, l2.Next)
+		return l2
+	}
+}
+
+//迭代
+func MergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	cur := new(ListNode)
+	dummy := cur
+	for l1 != nil && l2 != nil {
+		if l1.Val < l2.Val {
+			cur.Next = l1
+			l1 = l1.Next
+		} else {
+			cur.Next = l2
+			l2 = l2.Next
+		}
+		cur = cur.Next
+	}
+	if l1 == nil {
+		cur.Next = l2
+	}
+	if l2 == nil {
+		cur.Next = l1
+	}
+	return dummy.Next
 }

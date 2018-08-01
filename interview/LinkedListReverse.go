@@ -50,8 +50,8 @@ func reverse1(node *Node) *Node {
 
 //迭代版本
 func reverse2(node *Node) *Node {
-	var next *Node = nil
-	var prev *Node = nil
+	var next *Node
+	var prev *Node
 	for node != nil {
 		next = node.next
 		node.next = prev
