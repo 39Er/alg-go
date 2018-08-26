@@ -19,4 +19,6 @@ func TestCreateBST(t *testing.T) {
 	fmt.Println("删除", key, "是否成功：", DelBST(tree, key))
 	fmt.Print("删除后的二叉排序树：")
 	ListBST(tree)
+	fmt.Println()
+	LevelTraverse(tree)
 }

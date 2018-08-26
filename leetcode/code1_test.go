@@ -41,18 +41,9 @@ func TestRemoveNthFromEnd(t *testing.T) {
 	node2 := &ListNode{3, node1}
 	node3 := &ListNode{2, node2}
 	head := &ListNode{1, node3}
-	printList(head)
+	PrintList(head)
 	node := RemoveNthFromEnd(head, 2)
-	printList(node)
-}
-
-func printList(node *ListNode) {
-	fmt.Printf("%d\t", node.Val)
-	for node.Next != nil {
-		node = node.Next
-		fmt.Printf("%d\t", node.Val)
-	}
-	fmt.Println()
+	PrintList(node)
 }
 
 func TestIsValid(t *testing.T) {
@@ -73,5 +64,48 @@ func TestMergeTwoLists(t *testing.T) {
 	node32 := &ListNode{3, node22}
 	head12 := &ListNode{0, node32}
 
-	printList(MergeTwoLists(head11, head12))
+	PrintList(MergeTwoLists(head11, head12))
+}
+
+func TestGenerateParenthesis(t *testing.T) {
+	fmt.Println(GenerateParenthesis(3))
+}
+
+func TestMergeKLists(t *testing.T) {
+	tail1 := &ListNode{10, nil}
+	node11 := &ListNode{8, tail1}
+	node21 := &ListNode{5, node11}
+	node31 := &ListNode{2, node21}
+	head11 := &ListNode{1, node31}
+
+	tail2 := &ListNode{9, nil}
+	node12 := &ListNode{6, tail2}
+	node22 := &ListNode{5, node12}
+	node32 := &ListNode{3, node22}
+	head12 := &ListNode{0, node32}
+
+	tail3 := &ListNode{9, nil}
+	node23 := &ListNode{5, tail3}
+	node33 := &ListNode{3, node23}
+	head13 := &ListNode{0, node33}
+	lists := []*ListNode{head11, head12, head13}
+	PrintList(MergeKLists(lists))
+}
+
+func TestSwapPairs(t *testing.T) {
+	tail1 := &ListNode{10, nil}
+	node11 := &ListNode{8, tail1}
+	node21 := &ListNode{5, node11}
+	node31 := &ListNode{2, node21}
+	head11 := &ListNode{1, node31}
+	PrintList(SwapPairs(head11))
+}
+
+func TestReverseKGroup(t *testing.T) {
+	tail1 := &ListNode{10, nil}
+	node11 := &ListNode{8, tail1}
+	node21 := &ListNode{5, node11}
+	node31 := &ListNode{2, node21}
+	head11 := &ListNode{1, node31}
+	PrintList(ReverseKGroup(head11, 4))
 }

@@ -1,6 +1,9 @@
 package tree
 
-import "fmt"
+import (
+	"container/list"
+	"fmt"
+)
 
 /*二叉排序树*/
 type BiTree struct {
@@ -93,4 +96,29 @@ func deleteNode(tree *BiTree) {
 	} else {
 		previous.rchild = next.rchild
 	}
+}
+
+/**广度遍历*/
+func LevelTraverse(tree *BiTree) {
+	if tree == nil {
+		return
+	}
+	l := list.New()
+	l.PushBack(tree)
+	for l.Len() != 0 {
+		e := l.Front()
+		l.Remove(e)
+		pNode, ok := e.Value.(*BiTree)
+		if !ok {
+			return
+		}
+		fmt.Printf("%d\t", pNode.data)
+		if pNode.lchild != nil {
+			l.PushBack(pNode.lchild)
+		}
+		if pNode.rchild != nil {
+			l.PushBack(pNode.rchild)
+		}
+	}
+	fmt.Println()
 }

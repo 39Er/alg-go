@@ -392,3 +392,217 @@ func MergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	}
 	return dummy.Next
 }
+
+//22. Generate Parentheses
+/**
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+For example, given n = 3, a solution set is:
+
+[
+  "((()))",
+  "(()())",
+  "(())()",
+  "()(())",
+  "()()()"
+]
+*/
+func GenerateParenthesis(n int) []string {
+	return backtrack("", 0, 0, n)
+}
+func backtrack(str string, open int, close int, n int) (list []string) {
+	if len(str) == n*2 {
+		return []string{str}
+	}
+	if open < n {
+		list = append(list, backtrack(str+"(", open+1, close, n)...)
+	}
+	if close < open {
+		list = append(list, backtrack(str+")", open, close+1, n)...)
+	}
+	return list
+}
+
+//23. Merge k Sorted Lists
+/**
+Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+
+Example:
+
+Input:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+Output: 1->1->2->3->4->4->5->6
+*/
+func MergeKLists_bad(lists []*ListNode) *ListNode {
+	if lists == nil || len(lists) == 0 {
+		return nil
+	}
+	tmp := lists
+	lists = nil
+	for _, n := range tmp {
+		if n != nil {
+			lists = append(lists, n)
+		}
+	}
+	if len(lists) == 0 {
+		return nil
+	}
+	cur := new(ListNode)
+	dummy := cur
+	min := lists[0].Val
+	index := 0
+	for len(lists) > 1 {
+		for i, list := range lists {
+			if list != nil {
+				if list.Val < min {
+					min = list.Val
+					index = i
+				}
+			} else {
+				lists = append(lists[:i], lists[i+1:]...)
+			}
+		}
+		cur.Next = lists[index]
+		cur = cur.Next
+		lists[index] = lists[index].Next
+		if lists[index] == nil {
+			lists = append(lists[:index], lists[index+1:]...)
+			index = 0
+		}
+		min = lists[index].Val
+	}
+	cur.Next = lists[0]
+	return dummy.Next
+}
+
+func MergeKLists(lists []*ListNode) *ListNode {
+	switch len(lists) {
+	case 0:
+		return nil
+	case 1:
+		return lists[0]
+	case 2:
+		return MergeTwoLists(lists[0], lists[1])
+	default:
+		n := len(lists) / 2
+		l1 := MergeKLists(lists[:n])
+		l2 := MergeKLists(lists[n:])
+		return MergeTwoLists(l1, l2)
+	}
+}
+
+//24. Swap Nodes in Pairs
+/**
+Given a linked list, swap every two adjacent nodes and return its head.
+
+Example:
+
+Given 1->2->3->4, you should return the list as 2->1->4->3.
+Note:
+
+Your algorithm should use only constant extra space.
+You may not modify the values in the list's nodes, only nodes itself may be changed.
+
+*/
+func SwapPairs(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+	if head.Next == nil {
+		return head
+	}
+	dummy := new(ListNode)
+	dummy.Next = head.Next
+	i := 0
+	var prev *ListNode
+	var cur *ListNode
+	var next *ListNode
+	var nextNext *ListNode
+	for head.Next != nil {
+		if i%2 == 0 {
+			cur = head
+			next = head.Next
+			nextNext = head.Next.Next
+			head = head.Next
+			head.Next = cur
+			head.Next.Next = nextNext
+			if prev != nil {
+				prev.Next = next
+			}
+		} else {
+			prev = head
+		}
+		head = head.Next
+		i = i + 1
+	}
+	return dummy.Next
+}
+func PrintList(node *ListNode) {
+	if node == nil {
+		return
+	}
+	fmt.Printf("%d\t", node.Val)
+	for node.Next != nil {
+		node = node.Next
+		fmt.Printf("%d\t", node.Val)
+	}
+	fmt.Println()
+}
+
+//25. Reverse Nodes in k-Group
+/**
+Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
+
+k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.
+
+Example:
+
+Given this linked list: 1->2->3->4->5
+
+For k = 2, you should return: 2->1->4->3->5
+
+For k = 3, you should return: 3->2->1->4->5
+
+Note:
+
+Only constant extra memory is allowed.
+You may not alter the values in the list's nodes, only nodes itself may be changed.
+*/
+
+func ReverseKGroup(head *ListNode, k int) *ListNode {
+	if head == nil {
+		return nil
+	}
+	dummy := new(ListNode)
+	dummy.Next = head
+	nodes := make([]*ListNode, k+1)
+	var prev *ListNode
+	for head != nil {
+		nodes[0] = head
+		for j := 1; j < k; j++ {
+			if head.Next != nil {
+				nodes[j] = head.Next
+				head = head.Next
+			} else {
+				return dummy.Next
+			}
+		}
+		nodes[k] = head.Next
+		head = head.Next
+		if prev != nil {
+			prev.Next = nodes[k-1]
+		} else {
+			dummy.Next = nodes[k-1]
+		}
+		for n := 1; n < k; n++ {
+			nodes[n].Next = nodes[n-1]
+		}
+		nodes[0].Next = nodes[k]
+		prev = nodes[0]
+	}
+	return dummy.Next
+}
