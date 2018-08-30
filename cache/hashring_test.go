@@ -19,6 +19,7 @@ func TestHashRing_AddNode(t *testing.T) {
 	}
 
 	fmt.Println("----------------------")
+	hashring.Delete("node1")
 	for i := 0; i < 10; i++ {
 		fmt.Println(hashring.GetNode(string(i)))
 	}

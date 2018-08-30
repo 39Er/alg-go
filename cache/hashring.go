@@ -90,7 +90,7 @@ func getValue(bs []byte) uint32 {
 	if len(bs) < 4 {
 		return 0
 	}
-	return uint32(bs[3]<<24) | uint32(bs[2]<<16) | uint32(bs[1]<<8) | uint32(bs[0])
+	return uint32(bs[3])<<24 | uint32(bs[2])<<16 | uint32(bs[1])<<8 | uint32(bs[0])
 }
 
 func (h *HashRing) GetNode(s string) string {
