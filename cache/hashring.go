@@ -5,6 +5,7 @@ import (
 	"math"
 	"sort"
 	"strconv"
+	"sync"
 )
 
 const (
@@ -30,6 +31,8 @@ type HashRing struct {
 	vituralSpots int
 	nodes        nodeArray
 	weights      map[string]int
+
+	lock sync.RWMutex
 }
 
 func NewHashRing(spots ...int) *HashRing {
@@ -46,6 +49,8 @@ func NewHashRing(spots ...int) *HashRing {
 }
 
 func (h *HashRing) AddNodes(nodeWeight map[string]int) {
+	h.lock.Lock()
+	defer h.lock.Unlock()
 	for nodeKey, w := range nodeWeight {
 		h.weights[nodeKey] = w
 	}
@@ -53,11 +58,15 @@ func (h *HashRing) AddNodes(nodeWeight map[string]int) {
 }
 
 func (h *HashRing) AddNode(nodeKey string, weight int) {
+	h.lock.Lock()
+	defer h.lock.Unlock()
 	h.weights[nodeKey] = weight
 	h.generate()
 }
 
 func (h *HashRing) Delete(nodeKey string) {
+	h.lock.Lock()
+	defer h.lock.Unlock()
 	delete(h.weights, nodeKey)
 	h.generate()
 }
@@ -94,6 +103,8 @@ func getValue(bs []byte) uint32 {
 }
 
 func (h *HashRing) GetNode(s string) string {
+	h.lock.RLock()
+	defer h.lock.RUnlock()
 	if len(h.nodes) == 0 {
 		return ""
 	}

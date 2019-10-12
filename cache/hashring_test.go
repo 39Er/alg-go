@@ -11,16 +11,30 @@ func TestHashRing_AddNode(t *testing.T) {
 	nodes := make(map[string]int)
 	for i := 1; i < 5; i++ {
 		nodeKey := fmt.Sprintf("node%d", i)
-		nodes[nodeKey] = i
+		nodes[nodeKey] = i * 10
 	}
 	hashring.AddNodes(nodes)
-	for i := 0; i < 10; i++ {
-		fmt.Println(hashring.GetNode(string(i)))
+	result := make(map[string]int)
+	addResult := func(key string) {
+		if value, ok := result[key]; !ok {
+			result[key] = 1
+		} else {
+			result[key] = value + 1
+		}
 	}
 
-	fmt.Println("----------------------")
-	hashring.Delete("node1")
-	for i := 0; i < 10; i++ {
-		fmt.Println(hashring.GetNode(string(i)))
+	for i := 0; i < 1000; i++ {
+		addResult(hashring.GetNode(string(i)))
 	}
+
+	fmt.Println(result)
+
+	fmt.Println("----------------------")
+
+	result = make(map[string]int)
+	hashring.Delete("node1")
+	for i := 0; i < 1000; i++ {
+		addResult(hashring.GetNode(string(i)))
+	}
+	fmt.Println(result)
 }
