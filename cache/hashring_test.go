@@ -38,3 +38,15 @@ func TestHashRing_AddNode(t *testing.T) {
 	}
 	fmt.Println(result)
 }
+
+func TestHashRing_ListNodeKeys(t *testing.T) {
+	hashring := NewHashRing()
+	hashring.AddNode("node0", 1)
+	nodes := make(map[string]int)
+	for i := 1; i < 5; i++ {
+		nodeKey := fmt.Sprintf("node%d", i)
+		nodes[nodeKey] = i * 10
+	}
+	hashring.AddNodes(nodes)
+	fmt.Println(hashring.ListNodeKeys())
+}

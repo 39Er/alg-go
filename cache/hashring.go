@@ -10,6 +10,7 @@ import (
 
 const (
 	DefaultVirualSpots = 400
+	DefaultNodePrefix  = "default-"
 )
 
 type node struct {
@@ -53,6 +54,15 @@ func (h *HashRing) AddNodes(nodeWeight map[string]int) {
 	defer h.lock.Unlock()
 	for nodeKey, w := range nodeWeight {
 		h.weights[nodeKey] = w
+	}
+	h.generate()
+}
+
+func (h *HashRing) AddDefaultNodes(count int) {
+	h.lock.Lock()
+	defer h.lock.Unlock()
+	for i := 0; i < count; i++ {
+		h.weights[DefaultNodePrefix+strconv.Itoa(i)] = 1
 	}
 	h.generate()
 }
@@ -117,4 +127,14 @@ func (h *HashRing) GetNode(s string) string {
 		i = 0
 	}
 	return h.nodes[i].nodeKey
+}
+
+func (h *HashRing) ListNodeKeys() []string {
+	h.lock.RLock()
+	defer h.lock.RUnlock()
+	var keys []string
+	for key := range h.weights {
+		keys = append(keys, key)
+	}
+	return keys
 }
